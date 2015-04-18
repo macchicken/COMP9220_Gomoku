@@ -43,6 +43,10 @@ public class GomokuPlay implements IPlay {
 				while ((input=this.br.readLine())!=null){
 					input=input.trim();
 					if ("".equals(input)){continue;}
+					if (!Constants.numPair.matcher(input).matches()){
+						System.out.println("type a location in a format of x,y");
+						continue;
+					}
 					String[] location=input.split(",");
 					Coordinate coordinate=new Coordinate(Integer.parseInt(location[0].trim()),Integer.parseInt(location[1].trim()));
 					boolean placed=this.board.setBoard(coordinate, this.playCurrent);
