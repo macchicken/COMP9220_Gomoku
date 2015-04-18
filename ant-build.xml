@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="appjar" name="Gomoku">
+<target name="appjar" description="create a jar pacakge for running in command line">
+	<jar destfile="Gomoku.jar" basedir="bin">
+	    <manifest>
+      		<attribute name="Main-Class"
+            	value="Gomoku"/>
+    		</manifest>
+	    </jar>
+</target>
+</project>
