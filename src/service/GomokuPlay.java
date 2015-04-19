@@ -35,31 +35,34 @@ public class GomokuPlay implements IPlay {
 	
 	@Override
 	public void play() {
+		this.board.disPlayBoard();
+		inputCoordinate();
+	}
+	
+	private void inputCoordinate(){
 		String input=null;
+		String player=Constants.getDiskName(this.playCurrent);
+		System.out.println(Constants.getDiskName(this.playCurrent)+"'s turn: Where do you wish to place your disc?\nPlease type x and y locations :");
 		try {
-				this.board.disPlayBoard();
-				String player=Constants.getDiskName(this.playCurrent);
-				System.out.println(Constants.getDiskName(this.playCurrent)+"'s turn: Where do you wish to place your disc?\nPlease type x and y locations :");
-				while ((input=this.br.readLine())!=null){
-					input=input.trim();
-					if ("".equals(input)){continue;}
-					if (!Constants.numPair.matcher(input).matches()){
-						System.out.println("type a location in a format of x,y");
-						continue;
-					}
-					String[] location=input.split(",");
-					Coordinate coordinate=new Coordinate(Integer.parseInt(location[0].trim()),Integer.parseInt(location[1].trim()));
-					boolean placed=this.board.setBoard(coordinate, this.playCurrent);
-					if (!placed){continue;}
-					this.count++;
-					System.out.println("You have placed "+ player+" disc at "+coordinate);
-					break;
+			while ((input=this.br.readLine())!=null){
+				input=input.trim();
+				if ("".equals(input)){continue;}
+				if (!Constants.numPair.matcher(input).matches()){
+					System.out.println("type a location in a format of x,y");
+					continue;
 				}
+				String[] location=input.split(",");
+				Coordinate coordinate=new Coordinate(Integer.parseInt(location[0].trim()),Integer.parseInt(location[1].trim()));
+				boolean placed=this.board.setBoard(coordinate, this.playCurrent);
+				if (!placed){continue;}
+				this.count++;
+				System.out.println("You have placed "+ player+" disc at "+coordinate);
+				break;
+			}
 		} catch (IOException e) {
 			System.out.println("ioe"+e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
 
 	private void switchPlayer(){
