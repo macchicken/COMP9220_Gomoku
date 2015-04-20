@@ -42,7 +42,7 @@ public class GomokuPlay implements IPlay {
 	private void inputCoordinate(){
 		String input=null;
 		String player=Constants.getDiskName(this.playCurrent);
-		System.out.println(Constants.getDiskName(this.playCurrent)+"'s turn: Where do you wish to place your disc?\nPlease type x and y locations :");
+		System.out.println(player+"'s turn: Where do you wish to place your disc?\nPlease type x and y locations :");
 		try {
 			while ((input=this.br.readLine())!=null){
 				input=input.trim();

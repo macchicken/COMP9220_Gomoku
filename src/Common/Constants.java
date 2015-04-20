@@ -10,6 +10,6 @@ public class Constants {
 	public static final Pattern numPair = Pattern.compile("[1-9][0-9]*[\\s\t\n]*,[\\s\t\n]*[1-9][0-9]*");
 	
 	public static String getDiskName(char color){
-		return black==color?"Black":"White";
+		return color==black?"Black":"White";
 	}
 }
