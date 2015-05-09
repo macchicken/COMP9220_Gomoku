@@ -35,6 +35,7 @@ public class GomokuPlayCheck extends CheckRule {
 	            }
 	        }
 	    }
+	    if (this.winner==0){
 	    // vertical
 	    for (int x=0;x<matrix.length-4;x++){
 	    	for (int y=0; y < matrix[x].length; y++ )
@@ -48,7 +49,8 @@ public class GomokuPlayCheck extends CheckRule {
 	            	this.winner=currentPlayer;
 	            }
 	        }
-	    }
+	    }}
+	    if (this.winner==0){
 	    // for '\' line
 	    for (int x=0;x<matrix.length-4;x++){
 	    	for (int y=0; y < matrix[x].length-4; y++ )
@@ -62,7 +64,8 @@ public class GomokuPlayCheck extends CheckRule {
 	            	this.winner=currentPlayer;
 	            }
 	        }
-	    }
+	    }}
+	    if (this.winner==0){
 	    // '/' line
 	    for (int x=0;x<matrix.length-4;x++){
 	    	for (int y=4; y < matrix[x].length; y++ )
@@ -76,7 +79,7 @@ public class GomokuPlayCheck extends CheckRule {
 	    			this.winner=currentPlayer;
 	    		}
 	    	}
-	    }
+	    }}
 	    return winOrDraw(count);
 	}
 	
