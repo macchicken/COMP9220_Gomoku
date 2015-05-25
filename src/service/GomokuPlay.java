@@ -19,7 +19,7 @@ public class GomokuPlay implements IPlay {
 	private BufferedReader br;
 	private CheckRule check;
 	private int count;
-	private Command com;
+//	private Command com;
 	private int bcount=0;
 	private int wcount=0;
 	private Time t;
