@@ -23,7 +23,7 @@ public class Gomoku {
 
 	public static void main(String[] args) {
 		Gomoku gomoku = new Gomoku(new GomokuPlay(Constants.black,
-				Constants.white, 15, 15, new GomokuPlayCheck(64)));
+				Constants.white, 15, 15, new GomokuPlayCheck(64),30));
 		gomoku.start();
 	}
 

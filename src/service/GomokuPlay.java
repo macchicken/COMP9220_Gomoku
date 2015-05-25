@@ -26,7 +26,7 @@ public class GomokuPlay implements IPlay {
 	private Command bcom=new BlackCommand();
 	private Command wcom=new WhiteCommand();
 	
-	public GomokuPlay(char play1, char play2,int lenX,int lenY,CheckRule check) {
+	public GomokuPlay(char play1, char play2,int lenX,int lenY,CheckRule check,int maxTime) {
 		super();
 		this.play1 = play1;
 		this.play2 = play2;
@@ -36,7 +36,7 @@ public class GomokuPlay implements IPlay {
 		this.board=new Board(lenX,lenY);
 		this.count=0;
 		this.check=check;
-		this.t=new Time();
+		this.t=new Time(maxTime);
 	}
 
 	
