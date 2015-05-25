@@ -19,6 +19,12 @@ public class GomokuPlay implements IPlay {
 	private BufferedReader br;
 	private CheckRule check;
 	private int count;
+	private Command com;
+	private int bcount=0;
+	private int wcount=0;
+	private Time t;
+	private Command bcom=new BlackCommand();
+	private Command wcom=new WhiteCommand();
 	
 	public GomokuPlay(char play1, char play2,int lenX,int lenY,CheckRule check) {
 		super();
@@ -30,6 +36,7 @@ public class GomokuPlay implements IPlay {
 		this.board=new Board(lenX,lenY);
 		this.count=0;
 		this.check=check;
+		this.t=new Time();
 	}
 
 	
@@ -44,6 +51,7 @@ public class GomokuPlay implements IPlay {
 		String player=Constants.getDiskName(this.playCurrent);
 		System.out.println(player+"'s turn: Where do you wish to place your disc?\nPlease type x and y locations :");
 		try {
+			t.start();
 			while ((input=this.br.readLine())!=null){
 				input=input.trim();
 				if ("".equals(input)){continue;}
@@ -55,8 +63,20 @@ public class GomokuPlay implements IPlay {
 				Coordinate coordinate=new Coordinate(Integer.parseInt(location[0].trim()),Integer.parseInt(location[1].trim()));
 				boolean placed=this.board.setBoard(coordinate, this.playCurrent);
 				if (!placed){continue;}
-				this.count++;
-				System.out.println("You have placed "+ player+" disc at "+coordinate);
+				if(!t.isTimeOut()){
+					this.count++;
+					if(player=="Black"){
+						bcount++;
+						getCurrentStep(player);
+					}else{
+						wcount++;
+						getCurrentStep(player);
+					}
+					System.out.println("You have placed "+ player+" disc at "+coordinate);
+				}else{
+					System.out.println("Time is out! Change player");
+				}
+				switchPlayer();
 				break;
 			}
 		} catch (IOException e) {
@@ -91,4 +111,44 @@ public class GomokuPlay implements IPlay {
 		}
 	}
 
+	private int getCurrentStep(String player){
+		if(player=="Black")
+			return bcount;
+		return wcount;
+	}
+
+	private void redo(String player){
+		if(player=="Black"){
+			if(!(getCurrentStep(player)==0)){
+				bcount--;
+			    bcom.redo();
+			}else {
+				System.out.println("You did not put any disk yet!");
+			}
+		}else{
+			if(!(getCurrentStep(player)==0)){
+				wcount--;
+			    wcom.redo();
+			}else {
+				System.out.println("You did not put any disk yet!");
+			}
+		}
+	}
+	private void undo(String player){
+		if(player=="Black"){
+			if(!(getCurrentStep(player)==0)){
+				bcount--;
+			    bcom.undo();
+			}else {
+				System.out.println("You did not put any disk yet!");
+			}
+		}else{
+			if(!(getCurrentStep(player)==0)){
+				wcount--;
+			    wcom.undo();
+			}else {
+				System.out.println("You did not put any disk yet!");
+			}
+		}
+	}
 }
