@@ -54,6 +54,7 @@ public class GomokuPlay implements IPlay {
 			t.start();
 			while ((input=this.br.readLine())!=null){
 				input=input.trim();
+				if(!t.isTimeOut()){
 				if ("".equals(input)){continue;}
 				if (!Constants.numPair.matcher(input).matches()){
 					System.out.println("type a location in a format of x,y");
@@ -63,7 +64,6 @@ public class GomokuPlay implements IPlay {
 				Coordinate coordinate=new Coordinate(Integer.parseInt(location[0].trim()),Integer.parseInt(location[1].trim()));
 				boolean placed=this.board.setBoard(coordinate, this.playCurrent);
 				if (!placed){continue;}
-				if(!t.isTimeOut()){
 					this.count++;
 					if(player=="Black"){
 						bcount++;
