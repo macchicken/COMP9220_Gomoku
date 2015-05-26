@@ -1,7 +1,7 @@
-import Common.Constants;
 import service.GomokuPlay;
 import service.GomokuPlayCheck;
 import service.IPlay;
+import Common.Constants;
 
 
 public class Gomoku {
@@ -23,7 +23,7 @@ public class Gomoku {
 
 	public static void main(String[] args) {
 		Gomoku gomoku = new Gomoku(new GomokuPlay(Constants.black,
-				Constants.white, 15, 15, new GomokuPlayCheck(64),30));
+				Constants.white, 15, 15, new GomokuPlayCheck(64),10));
 		gomoku.start();
 	}
 

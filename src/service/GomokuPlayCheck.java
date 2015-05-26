@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import Common.Constants;
 
-public class GomokuPlayCheck extends CheckRule {
+public class GomokuPlayCheck extends CheckRule<HashMap<String,Object>,String> {
 
 	private int maxDisks;
 	private char winner;

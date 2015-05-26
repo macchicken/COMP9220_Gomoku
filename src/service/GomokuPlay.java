@@ -3,7 +3,9 @@ package service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import Common.Constants;
 import model.Board;
@@ -17,16 +19,13 @@ public class GomokuPlay implements IPlay {
 	private Board board;
 	private InputStreamReader isr;
 	private BufferedReader br;
-	private CheckRule check;
+	private CheckRule<HashMap<String, Object>,String> check;
 	private int count;
-//	private Command com;
-	private int bcount=0;
-	private int wcount=0;
 	private Time t;
-	private Command bcom=new BlackCommand();
-	private Command wcom=new WhiteCommand();
+	private List<Command> cmds=new ArrayList<Command>();
+	private Coordinate previous=new Coordinate(0,0);
 	
-	public GomokuPlay(char play1, char play2,int lenX,int lenY,CheckRule check,int maxTime) {
+	public GomokuPlay(char play1, char play2,int lenX,int lenY,CheckRule<HashMap<String, Object>, String> check,int maxTime) {
 		super();
 		this.play1 = play1;
 		this.play2 = play2;
@@ -62,21 +61,21 @@ public class GomokuPlay implements IPlay {
 				}
 				String[] location=input.split(",");
 				Coordinate coordinate=new Coordinate(Integer.parseInt(location[0].trim()),Integer.parseInt(location[1].trim()));
-				boolean placed=this.board.setBoard(coordinate, this.playCurrent);
-				if (!placed){continue;}
-					this.count++;
+				boolean valid=this.board.validPosition(coordinate);
+				if (!valid){continue;}
+					this.count++;Command cmd=null;
 					if(player=="Black"){
-						bcount++;
-						getCurrentStep(player);
+						cmd=new BlackCommand(previous,coordinate);
 					}else{
-						wcount++;
-						getCurrentStep(player);
+						cmd=new WhiteCommand(previous,coordinate);
 					}
+					cmd.execute(board);
+					cmds.add(cmd);
+					previous=coordinate;
 					System.out.println("You have placed "+ player+" disc at "+coordinate);
 				}else{
 					System.out.println("Time is out! Change player");
 				}
-				switchPlayer();
 				break;
 			}
 		} catch (IOException e) {
@@ -111,44 +110,37 @@ public class GomokuPlay implements IPlay {
 		}
 	}
 
-	private int getCurrentStep(String player){
-		if(player=="Black")
-			return bcount;
-		return wcount;
+	private void redo(String player,int steps){
+		if (cmds.isEmpty()){
+			System.out.println("You did not put any disk yet!");
+		}else{
+			int total=steps+this.count;
+			if (total>cmds.size()){
+				System.out.println("You excess the available steps!");
+			}else{
+				for (int i=this.count;i<total;i++){
+					cmds.get(i).execute(board);
+				}
+				this.count+=steps;
+			}
+		}
 	}
 
-	private void redo(String player){
-		if(player=="Black"){
-			if(!(getCurrentStep(player)==0)){
-				bcount--;
-			    bcom.redo();
-			}else {
-				System.out.println("You did not put any disk yet!");
-			}
+	private void undo(String player,int steps){
+		if (cmds.isEmpty()){
+			System.out.println("You did not put any disk yet!");
 		}else{
-			if(!(getCurrentStep(player)==0)){
-				wcount--;
-			    wcom.redo();
-			}else {
-				System.out.println("You did not put any disk yet!");
+			if ((this.count-steps)<0){
+				System.out.println("You excess the available steps!");
+			}else{
+				int start=cmds.size()-steps;
+				for (int i=start;i<cmds.size();i++){
+					cmds.get(i).undo(board);
+				}
+				this.count-=steps;
 			}
 		}
 	}
-	private void undo(String player){
-		if(player=="Black"){
-			if(!(getCurrentStep(player)==0)){
-				bcount--;
-			    bcom.undo();
-			}else {
-				System.out.println("You did not put any disk yet!");
-			}
-		}else{
-			if(!(getCurrentStep(player)==0)){
-				wcount--;
-			    wcom.undo();
-			}else {
-				System.out.println("You did not put any disk yet!");
-			}
-		}
-	}
+
+
 }

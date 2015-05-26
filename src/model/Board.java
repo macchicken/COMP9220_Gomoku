@@ -24,18 +24,23 @@ public class Board {
 		}
 	}
 	
-	public boolean setBoard(Coordinate coordinate,char z){
+	public void setBoard(Coordinate coordinate,char z){
+		int x=coordinate.getX();
+		int y=coordinate.getY();
+		this.matrix[x-1][y-1]=z;
+	}
+
+	public boolean validPosition(Coordinate coordinate){
 		int x=coordinate.getX();
 		int y=coordinate.getY();
 		if (x>this.matrix.length||y>this.matrix[x-1].length){
 			System.out.println(" should place a disk within the board ");
 			return false;
-		}
-		if (this.matrix[x-1][y-1]==Constants.empty){this.matrix[x-1][y-1]=z;return true;}
-		else{
+		}else if (this.matrix[x-1][y-1]!=Constants.empty){
 			System.out.println(" this place has been occupied,try again ");
 			return false;
 		}
+		return true;
 	}
 
 	public char[][] getMatrix() {

@@ -1,18 +1,17 @@
 package service;
 
-import java.util.HashMap;
 
-public abstract class CheckRule {
+public abstract class CheckRule<E,R> {
 
-	protected String checkResult;
+	protected R checkResult;
 
-	public CheckRule(String checkResult) {
+	public CheckRule(R checkResult) {
 		super();
 		this.checkResult = checkResult;
 	}
-	public abstract boolean check(HashMap<String,Object> checkObjs);
+	public abstract boolean check(E checkObjs);
 
-	public String getCheckResult() {
+	public R getCheckResult() {
 		return this.checkResult;
 	}
 }
